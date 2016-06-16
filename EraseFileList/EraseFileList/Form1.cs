@@ -21,6 +21,19 @@ namespace EraseFileList
             progressBar1.Minimum = 0;
             progressBar1.Step = 1;
             progressBar1.Value = 0;
+
+            listBox1.KeyUp += ListBox1_KeyUp;
+            listBox2.KeyUp += ListBox2_KeyUp;
+        }
+
+        private void ListBox2_KeyUp(object sender, KeyEventArgs e)
+        {
+            CopySelectedValuesToClipboard(2);
+        }
+
+        private void ListBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            CopySelectedValuesToClipboard(1);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -140,6 +153,24 @@ namespace EraseFileList
                     }
                 }
             }
+        }
+
+        private void CopySelectedValuesToClipboard(int id)
+        {
+            var builder = new StringBuilder();
+            switch(id)
+            {
+                case 1:
+                    foreach (String item in listBox1.SelectedItems)
+                        builder.AppendLine(item);
+                    break;
+                case 2:
+                    foreach (String item in listBox2.SelectedItems)
+                        builder.AppendLine(item);
+                    break;
+            }
+
+            Clipboard.SetText(builder.ToString());
         }
     }
 }
