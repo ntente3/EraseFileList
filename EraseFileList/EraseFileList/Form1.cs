@@ -49,7 +49,7 @@ namespace EraseFileList
                 string openFileName = ofd.FileName;
                 textBox2.Text = openFileName;
 
-                string[] filelines = File.ReadAllLines(openFileName);
+                string[] filelines = File.ReadAllLines(openFileName, Encoding.Unicode);
                 progressBar1.Maximum = filelines.Length;
 
                 foreach (string filename in filelines)
@@ -57,9 +57,16 @@ namespace EraseFileList
                     // 파일
                     if (filename.IndexOf("HKEY") != 0)
                     {
-//                        if (filename.IndexOf(@"C:\WINDOWS") == 0)
-                            //continue;
-                        FileInfo fi = new FileInfo(filename);
+                        FileInfo fi;
+                        try
+                        {
+                            fi = new FileInfo(filename);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Wrong Stirng : " + filename);
+                            continue;
+                        }
                         try
                         {
                             if (fi.Exists == false)
